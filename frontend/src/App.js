@@ -1,18 +1,33 @@
-import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { ChakraProvider } from "@chakra-ui/react";
-import DoctorList from "../../frontend/src/components/DoctorList";
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { Container } from '@mui/material';
+import DoctorSelection from './components/DoctorSelection';
+import SlotSelection from './components/SlotSelection';
+import AppointmentBookingForm from './components/AppointmentBookingForm';
+import AppointmentList from './components/AppointmentList';
 
-function App() {
+const App = () => {
+  const [selectedDoctor, setSelectedDoctor] = useState(null);
+  const [selectedDate, setSelectedDate] = useState('');
+
   return (
-    <ChakraProvider>
-      <Router>
+    <Router>
+      <Container>
         <Routes>
-          <Route path="/" element={<DoctorList />} />
+          <Route path="/" element={<DoctorSelection onSelectDoctor={setSelectedDoctor} />} />
+          <Route
+            path="/slots"
+            element={selectedDoctor && <SlotSelection doctor={selectedDoctor} date={selectedDate} />}
+          />
+          <Route
+            path="/book-appointment"
+            element={selectedDoctor && <AppointmentBookingForm onSubmit={(appointment) => console.log(appointment)} />}
+          />
+          <Route path="/appointments" element={<AppointmentList />} />
         </Routes>
-      </Router>
-    </ChakraProvider>
+      </Container>
+    </Router>
   );
-}
+};
 
 export default App;
