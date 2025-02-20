@@ -1,18 +1,19 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
 
-const AppointmentList = () => {
-  const { appointments } = useSelector((state) => state.appointments);
-
+const AppointmentList = ({ appointments }) => {
   return (
     <div>
       <h2>Your Appointments</h2>
-      {appointments.map((appointment) => (
-        <div key={appointment.id}>
-          <h3>{appointment.name}</h3>
-          <p>{appointment.date} - {appointment.time}</p>
-        </div>
-      ))}
+      {appointments.length === 0 ? (
+        <p>No appointments booked.</p>
+      ) : (
+        appointments.map((appointment) => (
+          <div key={appointment.id}>
+            <h3>{appointment.name} - {appointment.appointmentType}</h3>
+            <p>{appointment.date} - {appointment.time}</p>
+          </div>
+        ))
+      )}
     </div>
   );
 };

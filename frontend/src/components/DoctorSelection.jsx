@@ -1,19 +1,7 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchDoctors } from '../actions/doctorActions';
-import { Button, CircularProgress } from '@mui/material';
+import React from 'react';
+import { Button } from '@mui/material';
 
-const DoctorSelection = ({ onSelectDoctor }) => {
-  const dispatch = useDispatch();
-  const { doctors, loading, error } = useSelector((state) => state.doctors);
-
-  useEffect(() => {
-    dispatch(fetchDoctors());
-  }, [dispatch]);
-
-  if (loading) return <CircularProgress />;
-  if (error) return <div>Error: {error}</div>;
-
+const DoctorSelection = ({ doctors, onSelectDoctor }) => {
   return (
     <div>
       <h2>Select a Doctor</h2>

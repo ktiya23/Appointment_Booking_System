@@ -1,38 +1,32 @@
-import React, { useState, useEffect } from 'react';
-import { fetchAvailableSlots } from '../services/api';
-import { Button, Grid } from '@mui/material';
+import React, { useState } from 'react';
+import { Button, Grid, TextField } from '@mui/material';
 
-const SlotSelection = ({ doctor, date }) => {
-  const [slots, setSlots] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+const SlotSelection = ({ doctor, slots, onSelectDate }) => {
+  const [selectedSlot, setSelectedSlot] = useState('');
 
-  useEffect(() => {
-    const fetchSlots = async () => {
-      setLoading(true);
-      try {
-        const data = await fetchAvailableSlots(doctor.id, date);
-        setSlots(data);
-      } catch (err) {
-        setError('Error fetching slots');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchSlots();
-  }, [doctor, date]);
-
-  if (loading) return <CircularProgress />;
-  if (error) return <div>{error}</div>;
+  const handleSlotSelect = (slot) => {
+    setSelectedSlot(slot);
+  };
 
   return (
     <div>
-      <h2>Select a Slot</h2>
+      <h2>Select a Slot for {doctor.name}</h2>
+      <TextField
+        type="date"
+        label="Select Date"
+        onChange={(e) => onSelectDate(e.target.value)}
+        fullWidth
+        variant="outlined"
+      />
       <Grid container spacing={2}>
         {slots.map((slot) => (
           <Grid item key={slot.id}>
-            <Button variant="outlined">{slot.time}</Button>
+            <Button
+              variant={selectedSlot === slot.time ? 'contained' : 'outlined'}
+              onClick={() => handleSlotSelect(slot.time)}
+            >
+              {slot.time}
+            </Button>
           </Grid>
         ))}
       </Grid>
